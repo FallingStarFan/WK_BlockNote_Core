@@ -3,5 +3,6 @@
 
 # 但保留 dist 資料夾
 !dist/
+!dist/**
 # 保留 package.json
 !package.json
