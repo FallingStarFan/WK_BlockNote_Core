@@ -1,0 +1,56 @@
+name: Build and Release Project
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: |
+          rm -rf node_modules package-lock.json
+          npm install
+          npm rebuild rollup
+          npm install @hocuspocus/provider
+
+      - name: Build project
+        run: npm run build
+
+      - name: Clean local changes
+        run: git reset --hard
+
+      - name: Switch to release branch
+        run: |
+          git fetch origin release
+          git checkout release || git checkout -b release
+
+      - name: Setup Git user
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+
+      - name: Replace release branch with master
+        run: |
+          git checkout master -- .
+          git add .
+          git commit -m "Update release branch with latest build from master" || echo "No changes to commit"
+          git push origin release --force
