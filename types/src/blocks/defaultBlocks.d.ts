@@ -286,6 +286,40 @@ export declare const defaultBlockSpecs: {
             };
         }, any, InlineContentSchema, StyleSchema>;
     };
+    indentCustom: {
+        config: {
+            type: "indentCustom";
+            content: "inline";
+            propSchema: {
+                backgroundColor: {
+                    default: "default";
+                };
+                textColor: {
+                    default: "default";
+                };
+                textAlignment: {
+                    default: "left";
+                    values: readonly ["left", "center", "right", "justify"];
+                };
+            };
+        };
+        implementation: import("../index.js").TiptapBlockImplementation<{
+            type: "indentCustom";
+            content: "inline";
+            propSchema: {
+                backgroundColor: {
+                    default: "default";
+                };
+                textColor: {
+                    default: "default";
+                };
+                textAlignment: {
+                    default: "left";
+                    values: readonly ["left", "center", "right", "justify"];
+                };
+            };
+        }, any, InlineContentSchema, StyleSchema>;
+    };
     table: {
         config: {
             type: "table";
@@ -797,6 +831,40 @@ export declare const defaultBlockSchema: import("../index.js").BlockSchemaFromSp
                 checked: {
                     default: false;
                 };
+                backgroundColor: {
+                    default: "default";
+                };
+                textColor: {
+                    default: "default";
+                };
+                textAlignment: {
+                    default: "left";
+                    values: readonly ["left", "center", "right", "justify"];
+                };
+            };
+        }, any, InlineContentSchema, StyleSchema>;
+    };
+    indentCustom: {
+        config: {
+            type: "indentCustom";
+            content: "inline";
+            propSchema: {
+                backgroundColor: {
+                    default: "default";
+                };
+                textColor: {
+                    default: "default";
+                };
+                textAlignment: {
+                    default: "left";
+                    values: readonly ["left", "center", "right", "justify"];
+                };
+            };
+        };
+        implementation: import("../index.js").TiptapBlockImplementation<{
+            type: "indentCustom";
+            content: "inline";
+            propSchema: {
                 backgroundColor: {
                     default: "default";
                 };
