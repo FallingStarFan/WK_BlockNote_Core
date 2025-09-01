@@ -5,46 +5,60 @@ import {
   PropSchema,
   createBlockSpecFromStronglyTypedTiptapNode,
   createStronglyTypedTiptapNode,
+  propsToAttributes,
 } from "../../../schema/index.js";
 import { createDefaultBlockDOMOutputSpec } from "../../defaultBlockHelpers.js";
 import { defaultProps } from "../../defaultProps.js";
-import { getCustomContent } from "../getCustomContent.js";
 import { handleEnter } from "../CustomKeyboardShortcuts.js";
+import { getCustomContent } from "../getCustomContent.js";
 
 export const indentCustomPropSchema = {
   ...defaultProps,
+  // 用來儲存縮排層級，最低為 1
+  indentationLevel: {
+    default: 1, // 沒有預設值
+   
+  },
 } satisfies PropSchema;
 
 const IndentCustomBlockContent = createStronglyTypedTiptapNode({
   name: "indentCustom",
   content: "inline*",
   group: "blockContent",
-  // This is to make sure that check list parse rules run before, since they
-  // both parse `li` elements but check lists are more specific.
   priority: 90,
+
+  addAttributes() {
+    return {
+      ...propsToAttributes(indentCustomPropSchema),
+    };
+  },
+
   addInputRules() {
     return [
-      // Creates an unordered list when starting with "-", "+", or "*".
       new InputRule({
-        find: new RegExp(`^[-+*]\\s$`),
+        // 輸入 "1. " 轉換成 indentCustom
+        find: /^(\d+)\.\s$/,
         handler: ({ state, chain, range }) => {
           const blockInfo = getBlockInfoFromSelection(state);
           if (
             !blockInfo.isBlockContainer ||
             blockInfo.blockContent.node.type.spec.content !== "inline*" ||
+            blockInfo.blockNoteType === "indentCustom" ||
             blockInfo.blockNoteType === "heading"
           ) {
             return;
           }
-
+          const currentLevel = blockInfo.bnBlock.node.attrs.indentationLevel ?? 1;
           chain()
             .command(
               updateBlockCommand(blockInfo.bnBlock.beforePos, {
                 type: "indentCustom",
-                props: {},
+                props: {
+                  // 初始層級從 1 開始
+                   indentationLevel: currentLevel + 1  // 或 newLevel
+                },
               }),
             )
-            // Removes the "-", "+", or "*" character used to set the list.
             .deleteRange({ from: range.from, to: range.to });
         },
       }),
@@ -54,7 +68,8 @@ const IndentCustomBlockContent = createStronglyTypedTiptapNode({
   addKeyboardShortcuts() {
     return {
       Enter: () => handleEnter(this.options.editor),
-      "Mod-Shift-8": () => {
+
+      "Mod-Shift-7": () => {
         const blockInfo = getBlockInfoFromSelection(this.editor.state);
         if (
           !blockInfo.isBlockContainer ||
@@ -70,54 +85,78 @@ const IndentCustomBlockContent = createStronglyTypedTiptapNode({
           }),
         );
       },
+
+      // Tab: 增加縮排
+      Tab: () => {
+        const blockInfo = getBlockInfoFromSelection(this.editor.state);
+        if (!blockInfo.isBlockContainer) return false;
+
+        const currentLevel =
+          blockInfo.bnBlock.node.attrs.indentationLevel ?? 1;
+
+        return this.editor.commands.command(
+          updateBlockCommand(blockInfo.bnBlock.beforePos, {
+            props: { indentationLevel: currentLevel + 1 },
+          }),
+        );
+      },
+
+      // Shift-Tab: 減少縮排
+      "Shift-Tab": () => {
+        const blockInfo = getBlockInfoFromSelection(this.editor.state);
+        if (!blockInfo.isBlockContainer) return false;
+
+        const currentLevel =
+          blockInfo.bnBlock.node.attrs.indentationLevel ?? 1;
+        const newLevel = Math.max(1, currentLevel - 1); // 最低層級為 1
+
+        return this.editor.commands.command(
+          updateBlockCommand(blockInfo.bnBlock.beforePos, {
+            props: { indentationLevel:  newLevel as any},
+          }),
+        );
+      },
     };
+  },
+
+  addProseMirrorPlugins() {
+    // 縮排純粹由 props + CSS 控制，不需要額外 plugin
+    return [];
   },
 
   parseHTML() {
     return [
-      // Parse from internal HTML.
       {
         tag: "div[data-content-type=" + this.name + "]",
         contentElement: ".bn-inline-content",
       },
-      // Parse from external HTML.
       {
         tag: "li",
         getAttrs: (element) => {
-          if (typeof element === "string") {
-            return false;
-          }
-
+          if (typeof element === "string") return false;
           const parent = element.parentElement;
+          if (!parent) return false;
 
-          if (parent === null) {
-            return false;
-          }
-
-          if (
-            parent.tagName === "UL" ||
-            (parent.tagName === "DIV" && parent.parentElement?.tagName === "UL")
-          ) {
-            return {};
-          }
-
-          return false;
+          // 判斷縮排層級，簡單示範：li 包裹於 ol/ul 則層級 2，否則 1
+          const level = element.matches(":scope > ol > li, :scope > ul > li")
+            ? 2
+            : 1;
+          return { indentationLevel: level };
         },
-        // As `li` elements can contain multiple paragraphs, we need to merge their contents
-        // into a single one so that ProseMirror can parse everything correctly.
         getContent: (node, schema) =>
           getCustomContent(node, schema, this.name),
+        priority: 300,
         node: "indentCustom",
       },
     ];
   },
 
   renderHTML({ HTMLAttributes }) {
+    const level = HTMLAttributes.indentationLevel ?? 1;
+    HTMLAttributes["data-indent-level"] = level;
+
     return createDefaultBlockDOMOutputSpec(
       this.name,
-      // We use a <p> tag, because for <li> tags we'd need a <ul> element to put
-      // them in to be semantically correct, which we can't have due to the
-      // schema.
       "p",
       {
         ...(this.options.domAttributes?.blockContent || {}),
