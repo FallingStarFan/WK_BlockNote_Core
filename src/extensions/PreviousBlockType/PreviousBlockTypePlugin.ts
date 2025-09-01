@@ -156,6 +156,22 @@ export class PreviousBlockTypePlugin extends BlockNoteExtension {
                   }
                 }
 
+
+                if (transaction.getMeta("customListIndexing")) {
+                    // If the block existed before the transaction, gets the attributes from before the previous transaction
+                    // (i.e. the transaction that caused list item indices to need updating).
+                    if (node.node.attrs.id in prev.prevTransactionOldBlockAttrs) {
+                      oldAttrs =
+                        prev.prevTransactionOldBlockAttrs[node.node.attrs.id];
+                    }
+  
+                    // Stops list item indices themselves being animated (looks smoother), unless the block's content type is
+                    // changing from a numbered list item to something else.
+                    if (newAttrs.type === "customListItem") {
+                      oldAttrs.index = newAttrs.index;
+                    }
+                  }
+
                 prev.currentTransactionOldBlockAttrs[node.node.attrs.id] =
                   oldAttrs;
 

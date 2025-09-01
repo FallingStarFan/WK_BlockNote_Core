@@ -88,6 +88,7 @@ export function transformPasted(slice: Slice, view: EditorView) {
         if (
           nestedChild.type.name === "bulletListItem" ||
           nestedChild.type.name === "numberedListItem" ||
+          nestedChild.type.name === "customListItem" ||
           nestedChild.type.name === "checkListItem"
         ) {
           content.push(f.child(i + 1));
