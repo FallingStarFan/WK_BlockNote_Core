@@ -1,4 +1,3 @@
-import { InputRule } from "@tiptap/core";
 import { updateBlockCommand } from "../../../api/blockManipulation/commands/updateBlock/updateBlock.js";
 import { getBlockInfoFromSelection } from "../../../api/getBlockInfoFromPos.js";
 import {
