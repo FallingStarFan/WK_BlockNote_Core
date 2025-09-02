@@ -150,17 +150,32 @@ const CustomListItemBlockContent = createStronglyTypedTiptapNode({
     ];
   },
 
-  renderHTML({ HTMLAttributes }) {
+  // @blocknote/core/src/blocks/ListItemBlockContent/CustomListItemBlockContent.ts
+
+// ...（其餘程式碼保持不變）
+
+renderHTML({ HTMLAttributes }) {
+    // ✅ 從 HTMLAttributes 中取出 index 屬性
+    const { index, ...restHTMLAttributes } = HTMLAttributes;
+
+    const blockContentHTMLAttributes: Record<string, string> = {
+      ...(this.options.domAttributes?.blockContent || {}),
+      // ✅ 確保所有其他屬性都被傳遞
+      ...restHTMLAttributes,
+    };
+    
+    // ✅ 如果 index 存在，則手動將它加入為 data-index
+    if (index) {
+      blockContentHTMLAttributes["data-index"] = index;
+    }
+
     return createDefaultBlockDOMOutputSpec(
       this.name,
       // We use a <p> tag, because for <li> tags we'd need an <ol> element to
       // put them in to be semantically correct, which we can't have due to the
       // schema.
       "p",
-      {
-        ...(this.options.domAttributes?.blockContent || {}),
-        ...HTMLAttributes,
-      },
+      blockContentHTMLAttributes,
       this.options.domAttributes?.inlineContent || {},
     );
   },
