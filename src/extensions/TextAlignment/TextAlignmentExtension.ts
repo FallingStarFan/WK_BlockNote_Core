@@ -13,6 +13,7 @@ export const TextAlignmentExtension = Extension.create({
           "heading",
           "bulletListItem",
           "numberedListItem",
+          "customListItem",
           "checkListItem",
           "tableCell",
           "tableHeader",

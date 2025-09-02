@@ -22,7 +22,7 @@ const CustomListItemBlockContent = createStronglyTypedTiptapNode({
   name: "customListItem",
   content: "inline*",
   group: "blockContent",
-  priority: 90,
+  priority: 100,
   addAttributes() {
     return {
       ...propsToAttributes(customListItemPropSchema),

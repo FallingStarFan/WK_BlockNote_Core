@@ -86,6 +86,16 @@ function serializeBlock<
     ret.dom.setAttribute("data-index", listIndex.toString());
   }
 
+  if (block.type === "customListItem") {
+    // This is a workaround to make sure there's a list index set.
+    // Normally, this is set on the internal prosemirror nodes by the NumberedListIndexingPlugin,
+    // but:
+    // - (a) this information is not available on the Blocks passed to the serializer. (we only have access to BlockNote Blocks)
+    // - (b) the NumberedListIndexingPlugin might not even have run, because we can manually call blocksToFullHTML
+    //       with blocks that are not part of the active document
+    ret.dom.setAttribute("data-index", listIndex.toString());
+  }
+
   if (ret.contentDOM && block.content) {
     const ic = serializeInlineContentInternalHTML(
       editor,
