@@ -33,7 +33,6 @@ import { Paragraph } from "./ParagraphBlockContent/ParagraphBlockContent.js";
 import { Quote } from "./QuoteBlockContent/QuoteBlockContent.js";
 import { Table } from "./TableBlockContent/TableBlockContent.js";
 import { VideoBlock } from "./VideoBlockContent/VideoBlockContent.js";
-import { IndentCustom } from './CustomBlockContent/IndentCustomBlockContent/IndentCustomBlockContent';
 import { CustomListItem } from "./ListItemBlockContent/CustomListItemBlockContent/CustomListItemBlockContent.js";
 
 export const defaultBlockSpecs = {
@@ -45,7 +44,6 @@ export const defaultBlockSpecs = {
   bulletListItem: BulletListItem,
   numberedListItem: NumberedListItem,
   checkListItem: CheckListItem,
-  indentCustom:IndentCustom,
   customListItem: CustomListItem,
   table: Table,
   file: FileBlock,
