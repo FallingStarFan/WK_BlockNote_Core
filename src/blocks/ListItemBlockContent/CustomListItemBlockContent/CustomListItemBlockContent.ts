@@ -40,41 +40,6 @@ const CustomListItemBlockContent = createStronglyTypedTiptapNode({
     };
   },
 
-  addInputRules() {
-    return [
-      // Creates an ordered list when starting with "1.".
-      new InputRule({
-        find: new RegExp(`^(\\d+)\\.\\s$`),
-        handler: ({ state, chain, range, match }) => {
-          const blockInfo = getBlockInfoFromSelection(state);
-          if (
-            !blockInfo.isBlockContainer ||
-            blockInfo.blockContent.node.type.spec.content !== "inline*" ||
-            blockInfo.blockNoteType === "customListItem" ||
-            blockInfo.blockNoteType === "heading"
-          ) {
-            return;
-          }
-          const startIndex = parseInt(match[1]);
-
-          chain()
-            .command(
-              updateBlockCommand(blockInfo.bnBlock.beforePos, {
-                type: "customListItem",
-                props:
-                  (startIndex === 1 && {}) ||
-                  ({
-                    start: startIndex,
-                  } as any),
-              }),
-            )
-            // Removes the "1." characters used to set the list.
-            .deleteRange({ from: range.from, to: range.to });
-        },
-      }),
-    ];
-  },
-
   addKeyboardShortcuts() {
     return {
       Enter: () => handleEnter(this.options.editor),

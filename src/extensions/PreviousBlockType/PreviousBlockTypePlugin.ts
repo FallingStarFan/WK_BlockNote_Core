@@ -154,10 +154,6 @@ export class PreviousBlockTypePlugin extends BlockNoteExtension {
                   if (newAttrs.type === "numberedListItem") {
                     oldAttrs.index = newAttrs.index;
                   }
-
-                  if (newAttrs.type === "customListItem") {
-                    oldAttrs.index = newAttrs.index;
-                  }
                 }
 
 
