@@ -29,7 +29,7 @@ const CustomListItemBlockContent = createStronglyTypedTiptapNode({
       // the index attribute is only used internally (it's not part of the blocknote schema)
       // that's why it's defined explicitly here, and not part of the prop schema
       index: {
-        default: null,
+        default: 1,
         parseHTML: (element) => element.getAttribute("data-index"),
         renderHTML: (attributes) => {
           return {
@@ -122,10 +122,7 @@ const CustomListItemBlockContent = createStronglyTypedTiptapNode({
             return false;
           }
 
-          if (
-            parent.tagName === "OL" ||
-            (parent.tagName === "DIV" && parent.parentElement?.tagName === "OL")
-          ) {
+           {
             const startIndex =
               parseInt(parent.getAttribute("start") || "1") || 1;
 
@@ -163,9 +160,10 @@ renderHTML({ HTMLAttributes }) {
       // ✅ 確保所有其他屬性都被傳遞
       ...restHTMLAttributes,
     };
-    
+    console.log(index)
     // ✅ 如果 index 存在，則手動將它加入為 data-index
     if (index) {
+        
       blockContentHTMLAttributes["data-index"] = index;
     }
 
