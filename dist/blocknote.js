@@ -3886,15 +3886,16 @@ const js = J(
     ];
   },
   renderHTML({ node: e, HTMLAttributes: n }) {
-    var t, o;
-    return console.log(e.attrs), $(
+    var t, o, r, s;
+    return console.log("node.attrs:", e.attrs), console.log("prefix:", (t = e.attrs) == null ? void 0 : t.prefix), $(
       this.name,
       "p",
       {
-        ...((t = this.options.domAttributes) == null ? void 0 : t.blockContent) || {},
-        ...n
+        ...((o = this.options.domAttributes) == null ? void 0 : o.blockContent) || {},
+        ...n,
+        "data-prefix": ((r = e.attrs) == null ? void 0 : r.prefix) || ""
       },
-      ((o = this.options.domAttributes) == null ? void 0 : o.inlineContent) || {}
+      ((s = this.options.domAttributes) == null ? void 0 : s.inlineContent) || {}
     );
   }
 }), ni = J(
