@@ -75,8 +75,7 @@ const CustomListItemBlockContent = createStronglyTypedTiptapNode({
       "p",
       {
         ...(this.options.domAttributes?.blockContent || {}),
-        ...HTMLAttributes,
-        "data-prefix": node.attrs?.prefix || ""
+     
       },
       this.options.domAttributes?.inlineContent || {}
     );
