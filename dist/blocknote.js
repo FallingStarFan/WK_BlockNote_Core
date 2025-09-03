@@ -3856,11 +3856,6 @@ const js = J(
         default: 1,
         parseHTML: (e) => e.getAttribute("data-index"),
         renderHTML: (e) => ({ "data-index": e.index })
-      },
-      prefix: {
-        default: 0,
-        parseHTML: (e) => e.getAttribute("data-prefix"),
-        renderHTML: (e) => ({ "data-prefix": e.prefix })
       }
     };
   },
@@ -3908,7 +3903,6 @@ const js = J(
       {
         ...((r = this.options.domAttributes) == null ? void 0 : r.blockContent) || {},
         ...o,
-        "data-index": n,
         "data-prefix": t
       },
       ((s = this.options.domAttributes) == null ? void 0 : s.inlineContent) || {}
