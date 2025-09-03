@@ -226,36 +226,23 @@ NESTED BLOCKS
 
 /* ----------------------------------------------------------------- Custom List ----------------------------------------------------------------- */
 
-/* Ordered */
-.bn-block-content[data-content-type="customListItem"]::before {
-    display: flex;
-    justify-content: center;
-    min-width: 24px;
-    padding-right: 4px;
+
+
+
+  .bn-block-content[data-content-type="customListItem"] {
+    position: relative;
+    
   }
   
-  [data-content-type="customListItem"] {
-    --index: attr(data-index);
-  }
-  
-  [data-prev-type="customListItem"] {
-    --prev-index: attr(data-prev-index);
-  }
-  
-  .bn-block-outer[data-prev-type="customListItem"]:not([data-prev-index="none"])
-    > .bn-block
-    > .bn-block-content::before {
-    content: var(--prev-index) ".";
-  }
-  
-  .bn-block-outer:not([data-prev-type])
-    > .bn-block
-    > .bn-block-content[data-content-type="customListItem"]::before,
-  .bn-block-outer:not([data-prev-type])
-    > .bn-block
-    > div[data-type="modification"]
-    > .bn-block-content[data-content-type="customListItem"]::before {
-    content: var(--index) ".";
+  .bn-block-content[data-content-type="customListItem"]::before {
+    content: attr(data-prefix) attr(data-index);
+    position: relative;
+    left: 0;
+    top: 0;
+    min-width: 50px;
+    text-align: right;
+    padding-right: 10px;
+    color: #ffffff; /* 可自訂樣式 */
   }
   
 /* ----------------------------------------------------------------- End Custom List ----------------------------------------------------------------- */
