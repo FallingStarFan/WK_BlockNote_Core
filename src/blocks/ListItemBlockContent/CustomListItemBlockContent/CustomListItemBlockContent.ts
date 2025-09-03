@@ -67,7 +67,8 @@ const CustomListItemBlockContent = createStronglyTypedTiptapNode({
   },
 
   renderHTML({node, HTMLAttributes }) {
-    console.log(node.attrs);
+    console.log('node.attrs:', node.attrs);
+    console.log('prefix:', node.attrs?.prefix);
 
     return createDefaultBlockDOMOutputSpec(
       this.name,
@@ -75,6 +76,7 @@ const CustomListItemBlockContent = createStronglyTypedTiptapNode({
       {
         ...(this.options.domAttributes?.blockContent || {}),
         ...HTMLAttributes,
+        "data-prefix": node.attrs?.prefix || ""
       },
       this.options.domAttributes?.inlineContent || {}
     );
