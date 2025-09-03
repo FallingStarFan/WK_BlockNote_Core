@@ -1,6 +1,5 @@
 
-import { updateBlockCommand } from "../../../api/blockManipulation/commands/updateBlock/updateBlock.js";
-import { getBlockInfoFromSelection } from "../../../api/getBlockInfoFromPos.js";
+
 import {
   PropSchema,
   createBlockSpecFromStronglyTypedTiptapNode,
@@ -10,7 +9,6 @@ import {
 import { createDefaultBlockDOMOutputSpec } from "../../defaultBlockHelpers.js";
 import { defaultProps } from "../../defaultProps.js";
 import { getListItemContent } from "../getListItemContent.js";
-import { handleEnter } from "../ListItemKeyboardShortcuts.js";
 import { CustomListIndexingPlugin } from "./CustomListIndexingPlugin.js";
 
 // 屬性定義
