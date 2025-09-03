@@ -3,8 +3,8 @@ var uo = (e, n, t) => n in e ? lo(e, n, { enumerable: !0, configurable: !0, writ
 var p = (e, n, t) => uo(e, typeof n != "symbol" ? n + "" : n, t);
 import { Slice as Z, Fragment as R, DOMSerializer as ln, DOMParser as Be, Node as po } from "prosemirror-model";
 import { ReplaceStep as dn, ReplaceAroundStep as rt, Mapping as ho } from "prosemirror-transform";
-import { Extension as U, combineTransactionSteps as un, getChangedRanges as fo, findChildrenInRange as mo, Node as oe, Mark as re, isTextSelection as pn, InputRule as le, callOrReturn as go, getExtensionField as bo, mergeAttributes as bt, selectionToInsertionEnd as ko, isNodeSelection as st, posToDOMRect as $e, getMarkRange as At, findChildren as Nt, findParentNode as wo, extensions as ye, Editor as yo, createDocument as Co, getSchema as vo } from "@tiptap/core";
-import { Plugin as I, PluginKey as V, TextSelection as H, NodeSelection as be, Selection as _e, EditorState as So } from "prosemirror-state";
+import { Extension as U, combineTransactionSteps as un, getChangedRanges as fo, findChildrenInRange as mo, Node as oe, Mark as re, isTextSelection as pn, InputRule as le, callOrReturn as go, getExtensionField as bo, mergeAttributes as bt, selectionToInsertionEnd as ko, isNodeSelection as st, posToDOMRect as Ue, getMarkRange as At, findChildren as Nt, findParentNode as wo, extensions as ye, Editor as yo, createDocument as Co, getSchema as vo } from "@tiptap/core";
+import { Plugin as I, PluginKey as V, TextSelection as H, NodeSelection as be, Selection as Ve, EditorState as So } from "prosemirror-state";
 import { v4 as hn } from "uuid";
 import { createHighlightPlugin as Eo } from "prosemirror-highlight";
 import { createParser as Bo } from "prosemirror-highlight/shiki";
@@ -20,7 +20,7 @@ import { Gapcursor as Wo } from "@tiptap/extension-gapcursor";
 import { History as jo } from "@tiptap/extension-history";
 import { Link as Go } from "@tiptap/extension-link";
 import { Text as qo } from "@tiptap/extension-text";
-import { yCursorPlugin as Ko, defaultSelectionBuilder as Yo, ySyncPlugin as Jo, yUndoPlugin as Xo, ySyncPluginKey as de, getRelativeSelection as Zo, absolutePositionToRelativePosition as Qo, relativePositionToAbsolutePosition as er, yUndoPluginKey as Ne, yCursorPluginKey as tr, undoCommand as nr, redoCommand as or } from "y-prosemirror";
+import { yCursorPlugin as Ko, defaultSelectionBuilder as Yo, ySyncPlugin as Jo, yUndoPlugin as Xo, ySyncPluginKey as de, getRelativeSelection as Zo, absolutePositionToRelativePosition as Qo, relativePositionToAbsolutePosition as er, yUndoPluginKey as Ae, yCursorPluginKey as tr, undoCommand as nr, redoCommand as or } from "y-prosemirror";
 import { DecorationSet as q, Decoration as Q, EditorView as rr } from "prosemirror-view";
 import * as ie from "yjs";
 import { undo as sr, redo as ir } from "prosemirror-history";
@@ -39,7 +39,7 @@ function dr(e) {
   );
   return lr(n);
 }
-const Ge = U.create({
+const je = U.create({
   name: "uniqueID",
   // we’ll set a very high priority to make sure this runs first
   // and is compatible with `appendTransaction` hooks of other extensions
@@ -356,7 +356,7 @@ const M = {
     values: ["left", "center", "right", "justify"]
   }
 }, mn = ["backgroundColor", "textColor"];
-function Fe(e) {
+function $e(e) {
   return "data-" + e.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
 }
 function jc(e) {
@@ -374,7 +374,7 @@ function ke(e) {
       // value is the same as its default, we don't display an HTML
       // attribute for it.
       parseHTML: (r) => {
-        const s = r.getAttribute(Fe(t));
+        const s = r.getAttribute($e(t));
         if (s === null)
           return null;
         if (o.default === void 0 && o.type === "boolean" || o.default !== void 0 && typeof o.default == "boolean")
@@ -386,7 +386,7 @@ function ke(e) {
         return s;
       },
       renderHTML: (r) => r[t] !== o.default ? {
-        [Fe(t)]: r[t]
+        [$e(t)]: r[t]
       } : {}
     };
   }), n;
@@ -404,7 +404,7 @@ function wt(e, n, t, o) {
     throw new Error("Block type does not match");
   return a;
 }
-function He(e, n, t, o, r = !1, s) {
+function Ne(e, n, t, o, r = !1, s) {
   const i = document.createElement("div");
   if (s !== void 0)
     for (const [a, c] of Object.entries(s))
@@ -415,7 +415,7 @@ function He(e, n, t, o, r = !1, s) {
   ), i.setAttribute("data-content-type", n);
   for (const [a, c] of Object.entries(t)) {
     const d = o[a].default;
-    !mn.includes(a) && c !== d && i.setAttribute(Fe(a), c);
+    !mn.includes(a) && c !== d && i.setAttribute($e(a), c);
   }
   return r && i.setAttribute("data-file-block", ""), i.appendChild(e.dom), e.contentDOM !== void 0 && (e.contentDOM.className = ne(
     "bn-inline-content",
@@ -492,7 +492,7 @@ function Me(e, n) {
     },
     renderHTML({ HTMLAttributes: o }) {
       const r = document.createElement("div");
-      return He(
+      return Ne(
         {
           dom: r,
           contentDOM: e.content === "inline" ? r : void 0
@@ -512,7 +512,7 @@ function Me(e, n) {
           r,
           this.editor,
           e.type
-        ), i = ((l = this.options.domAttributes) == null ? void 0 : l.blockContent) || {}, a = n.render(s, r), c = He(
+        ), i = ((l = this.options.domAttributes) == null ? void 0 : l.blockContent) || {}, a = n.render(s, r), c = Ne(
           a,
           s.type,
           s.props,
@@ -533,7 +533,7 @@ function Me(e, n) {
     toInternalHTML: (o, r) => {
       var a;
       const s = ((a = t.options.domAttributes) == null ? void 0 : a.blockContent) || {}, i = n.render(o, r);
-      return He(
+      return Ne(
         i,
         o.type,
         o.props,
@@ -552,7 +552,7 @@ function Me(e, n) {
         o,
         r
       );
-      return i === void 0 && (i = n.render(o, r)), He(
+      return i === void 0 && (i = n.render(o, r)), Ne(
         i,
         o.type,
         o.props,
@@ -656,7 +656,7 @@ function C(e) {
   const n = ee(e.doc, e.selection.anchor);
   return Y(n);
 }
-function qe(e) {
+function Ge(e) {
   const n = ee(e.doc, e.selection.anchor);
   return Y(n);
 }
@@ -700,7 +700,7 @@ function wn(e, n, t) {
     }), d.cells = a.content.content.map((u, h) => (r[l] || (r[l] = []), r[l][h] = u.type.name === "tableHeader", {
       type: "tableCell",
       content: u.content.content.map(
-        (m) => Ke(m, n, t)
+        (m) => qe(m, n, t)
       ).reduce(
         (m, g) => {
           if (!m.length)
@@ -726,7 +726,7 @@ function wn(e, n, t) {
     r != null && r.every((c) => c[a]) && (o.headerCols = (o.headerCols ?? 0) + 1);
   return o;
 }
-function Ke(e, n, t) {
+function qe(e, n, t) {
   const o = [];
   let r;
   return e.content.forEach((s) => {
@@ -840,7 +840,7 @@ function ct(e, n, t) {
     a in l && (o[a] = c);
   }
   let s;
-  return r.content === "styled" ? s = Ke(
+  return r.content === "styled" ? s = qe(
     e,
     n,
     t
@@ -859,7 +859,7 @@ function E(e, n, t = Ct(n), o = vt(n), r = we(n), s = St(n)) {
     return i;
   const a = yt(e, 0);
   let c = a.bnBlock.node.attrs.id;
-  c === null && (c = Ge.options.generateID());
+  c === null && (c = je.options.generateID());
   const l = t[a.blockNoteType];
   if (!l)
     throw Error("Block is of an unrecognized type: " + a.blockNoteType);
@@ -888,7 +888,7 @@ function E(e, n, t = Ct(n), o = vt(n), r = we(n), s = St(n)) {
   if (u.content === "inline") {
     if (!a.isBlockContainer)
       throw new Error("impossible");
-    f = Ke(
+    f = qe(
       a.blockContent.node,
       o,
       r
@@ -998,7 +998,7 @@ function Vt(e, n, t, o) {
   return e.dom.setAttribute("data-inline-content-type", n), Object.entries(t).filter(([r, s]) => {
     const i = o[r];
     return s !== i.default;
-  }).map(([r, s]) => [Fe(r), s]).forEach(([r, s]) => e.dom.setAttribute(r, s)), e.contentDOM !== void 0 && e.contentDOM.setAttribute("data-editable", ""), e;
+  }).map(([r, s]) => [$e(r), s]).forEach(([r, s]) => e.dom.setAttribute(r, s)), e.contentDOM !== void 0 && e.contentDOM.setAttribute("data-editable", ""), e;
 }
 function br(e) {
   return {
@@ -1478,7 +1478,7 @@ function W(e, n, t, o = we(n)) {
     );
   return r;
 }
-function Ye(e, n, t = we(n)) {
+function Ke(e, n, t = we(n)) {
   const o = [], r = new Array(e.headerRows ?? 0).fill(!0), s = new Array(e.headerCols ?? 0).fill(!0), i = e.columnWidths ?? [];
   for (let a = 0; a < e.rows.length; a++) {
     const c = e.rows[a], l = [], d = r[a];
@@ -1548,7 +1548,7 @@ function xn(e, n, t) {
     );
     o = n.nodes[r].createChecked(e.props, s);
   } else if (e.content.type === "tableContent") {
-    const s = Ye(e.content, n, t);
+    const s = Ke(e.content, n, t);
     o = n.nodes[r].createChecked(e.props, s);
   } else
     throw new K(e.content.type);
@@ -1556,7 +1556,7 @@ function xn(e, n, t) {
 }
 function he(e, n, t = we(n)) {
   let o = e.id;
-  o === void 0 && (o = Ge.options.generateID());
+  o === void 0 && (o = je.options.generateID());
   const r = [];
   if (e.children)
     for (const i of e.children)
@@ -1720,7 +1720,7 @@ function $t(e, n, t) {
     (d) => E(d, o)
   ), removedBlocks: i };
 }
-const D = (e, n) => ({
+const O = (e, n) => ({
   tr: t,
   dispatch: o
 }) => (o && Tn(t, e, n), !0);
@@ -1776,7 +1776,7 @@ function Hr(e, n, t, o, r, s, i) {
     else if (Array.isArray(e.content))
       c = W(e.content, a, o.name);
     else if (e.content.type === "tableContent")
-      c = Ye(e.content, a);
+      c = Ke(e.content, a);
     else
       throw new K(e.content.type);
   else
@@ -1864,7 +1864,7 @@ function In(e, n, t, o) {
     else if (Array.isArray(n))
       r = W(n, e.pmSchema);
     else if (n.type === "tableContent")
-      r = Ye(n, e.pmSchema);
+      r = Ke(n, e.pmSchema);
     else
       throw new K(n.type);
   else throw new Error("blockContent is required");
@@ -1959,7 +1959,7 @@ const Ln = (e, n, t, o, r, s, i) => {
     r,
     s
   ), a;
-}, Je = (e, n) => {
+}, Ye = (e, n) => {
   const t = ln.fromSchema(e);
   return {
     exportBlocks: (o, r) => {
@@ -1992,7 +1992,7 @@ function Vr(e, n, t, o, r) {
     else if (Array.isArray(n))
       s = W(n, e.pmSchema, o);
     else if (n.type === "tableContent")
-      s = Ye(n, e.pmSchema);
+      s = Ke(n, e.pmSchema);
     else
       throw new K(n.type);
   else throw new Error("blockContent is required");
@@ -2069,7 +2069,7 @@ const Nn = (e, n, t, o) => {
   return {
     serializeBlocks: (o, r) => Nn(n, o, t, r).outerHTML
   };
-}, Xe = (e, n) => {
+}, Je = (e, n) => {
   const t = e.querySelector(
     n
   );
@@ -2161,7 +2161,7 @@ const Nn = (e, n, t, o) => {
 }, Mt = (e, n) => {
   const t = document.createElement("figure"), o = document.createElement("figcaption");
   return o.textContent = n, t.appendChild(e), t.appendChild(o), { dom: t };
-}, Ze = (e, n) => {
+}, Xe = (e, n) => {
   const t = document.createElement("div"), o = document.createElement("p");
   return o.textContent = n, t.appendChild(e), t.appendChild(o), {
     dom: t
@@ -2206,7 +2206,7 @@ const Nn = (e, n, t, o) => {
   if (e.tagName === "AUDIO")
     return e.closest("figure") ? void 0 : zt(e);
   if (e.tagName === "FIGURE") {
-    const n = Xe(e, "audio");
+    const n = Je(e, "audio");
     if (!n)
       return;
     const { targetElement: t, caption: o } = n;
@@ -2223,7 +2223,7 @@ const Nn = (e, n, t, o) => {
     };
   }
   let n;
-  return e.props.showPreview ? (n = document.createElement("audio"), n.src = e.props.url) : (n = document.createElement("a"), n.href = e.props.url, n.textContent = e.props.name || e.props.url), e.props.caption ? e.props.showPreview ? Mt(n, e.props.caption) : Ze(n, e.props.caption) : {
+  return e.props.showPreview ? (n = document.createElement("audio"), n.src = e.props.url) : (n = document.createElement("a"), n.href = e.props.url, n.textContent = e.props.name || e.props.url), e.props.caption ? e.props.showPreview ? Mt(n, e.props.caption) : Xe(n, e.props.caption) : {
     dom: n
   };
 }, Jr = Me(Gr, {
@@ -2499,7 +2499,7 @@ const es = re.create({
   if (e.tagName === "EMBED")
     return e.closest("figure") ? void 0 : jt(e);
   if (e.tagName === "FIGURE") {
-    const n = Xe(e, "embed");
+    const n = Je(e, "embed");
     if (!n)
       return;
     const { targetElement: t, caption: o } = n;
@@ -2516,7 +2516,7 @@ const es = re.create({
     };
   }
   const n = document.createElement("a");
-  return n.href = e.props.url, n.textContent = e.props.name || e.props.url, e.props.caption ? Ze(n, e.props.caption) : {
+  return n.href = e.props.url, n.textContent = e.props.name || e.props.url, e.props.caption ? Xe(n, e.props.caption) : {
     dom: n
   };
 }, ls = Me(ss, {
@@ -2604,7 +2604,7 @@ const es = re.create({
         handler: ({ state: t, chain: o, range: r }) => {
           const s = C(t);
           !s.isBlockContainer || s.blockContent.node.type.spec.content !== "inline*" || o().command(
-            D(s.bnBlock.beforePos, {
+            O(s.bnBlock.beforePos, {
               type: "heading",
               props: {
                 level: n
@@ -2623,7 +2623,7 @@ const es = re.create({
         () => {
           const t = C(this.editor.state);
           return !t.isBlockContainer || t.blockContent.node.type.spec.content !== "inline*" ? !0 : this.editor.commands.command(
-            D(t.bnBlock.beforePos, {
+            O(t.bnBlock.beforePos, {
               type: "heading",
               props: {
                 level: n
@@ -2808,7 +2808,7 @@ const es = re.create({
   if (e.tagName === "IMG")
     return e.closest("figure") ? void 0 : Gt(e);
   if (e.tagName === "FIGURE") {
-    const n = Xe(e, "img");
+    const n = Je(e, "img");
     if (!n)
       return;
     const { targetElement: t, caption: o } = n;
@@ -2825,7 +2825,7 @@ const es = re.create({
     };
   }
   let n;
-  return e.props.showPreview ? (n = document.createElement("img"), n.src = e.props.url, n.alt = e.props.name || e.props.caption || "BlockNote image", e.props.previewWidth && (n.width = e.props.previewWidth)) : (n = document.createElement("a"), n.href = e.props.url, n.textContent = e.props.name || e.props.url), e.props.caption ? e.props.showPreview ? Mt(n, e.props.caption) : Ze(n, e.props.caption) : {
+  return e.props.showPreview ? (n = document.createElement("img"), n.src = e.props.url, n.alt = e.props.name || e.props.caption || "BlockNote image", e.props.previewWidth && (n.width = e.props.previewWidth)) : (n = document.createElement("a"), n.href = e.props.url, n.textContent = e.props.name || e.props.url), e.props.caption ? e.props.showPreview ? Mt(n, e.props.caption) : Xe(n, e.props.caption) : {
     dom: n
   };
 }, ys = Me(gs, {
@@ -2853,9 +2853,9 @@ const es = re.create({
     }
   ];
   return r && o.tr.split(e, 2, a), !0;
-}, Ie = (e) => {
+}, Ze = (e) => {
   const { blockInfo: n, selectionEmpty: t } = e.transact((s) => ({
-    blockInfo: qe(s),
+    blockInfo: Ge(s),
     selectionEmpty: s.selection.anchor === s.selection.head
   }));
   if (!n.isBlockContainer)
@@ -2865,7 +2865,7 @@ const es = re.create({
     () => (
       // Changes list item block to a paragraph block if the content is empty.
       a.command(() => r.node.childCount === 0 ? a.command(
-        D(o.beforePos, {
+        O(o.beforePos, {
           type: "paragraph",
           props: {}
         })
@@ -2888,11 +2888,11 @@ const es = re.create({
   priority: 90,
   addKeyboardShortcuts() {
     return {
-      Enter: () => Ie(this.options.editor),
+      Enter: () => Ze(this.options.editor),
       "Mod-Shift-6": () => {
         const e = C(this.editor.state);
         return !e.isBlockContainer || e.blockContent.node.type.spec.content !== "inline*" ? !0 : this.editor.commands.command(
-          D(e.bnBlock.beforePos, {
+          O(e.bnBlock.beforePos, {
             type: "toggleListItem",
             props: {}
           })
@@ -2996,7 +2996,7 @@ const Es = {
         handler: ({ state: e, chain: n, range: t }) => {
           const o = C(e);
           !o.isBlockContainer || o.blockContent.node.type.spec.content !== "inline*" || o.blockNoteType === "heading" || n().command(
-            D(o.bnBlock.beforePos, {
+            O(o.bnBlock.beforePos, {
               type: "bulletListItem",
               props: {}
             })
@@ -3007,11 +3007,11 @@ const Es = {
   },
   addKeyboardShortcuts() {
     return {
-      Enter: () => Ie(this.options.editor),
+      Enter: () => Ze(this.options.editor),
       "Mod-Shift-8": () => {
         const e = C(this.editor.state);
         return !e.isBlockContainer || e.blockContent.node.type.spec.content !== "inline*" ? !0 : this.editor.commands.command(
-          D(e.bnBlock.beforePos, {
+          O(e.bnBlock.beforePos, {
             type: "bulletListItem",
             props: {}
           })
@@ -3081,7 +3081,7 @@ const Es = {
         handler: ({ state: e, chain: n, range: t }) => {
           const o = C(e);
           !o.isBlockContainer || o.blockContent.node.type.spec.content !== "inline*" || n().command(
-            D(o.bnBlock.beforePos, {
+            O(o.bnBlock.beforePos, {
               type: "checkListItem",
               props: {
                 checked: !1
@@ -3095,7 +3095,7 @@ const Es = {
         handler: ({ state: e, chain: n, range: t }) => {
           const o = C(e);
           !o.isBlockContainer || o.blockContent.node.type.spec.content !== "inline*" || n().command(
-            D(o.bnBlock.beforePos, {
+            O(o.bnBlock.beforePos, {
               type: "checkListItem",
               props: {
                 checked: !0
@@ -3108,11 +3108,11 @@ const Es = {
   },
   addKeyboardShortcuts() {
     return {
-      Enter: () => Ie(this.options.editor),
+      Enter: () => Ze(this.options.editor),
       "Mod-Shift-9": () => {
         const e = C(this.editor.state);
         return !e.isBlockContainer || e.blockContent.node.type.spec.content !== "inline*" ? !0 : this.editor.commands.command(
-          D(e.bnBlock.beforePos, {
+          O(e.bnBlock.beforePos, {
             type: "checkListItem",
             props: {}
           })
@@ -3201,7 +3201,7 @@ const Es = {
               `Expected blockContainer node, got ${h.node.type.name}`
             );
           this.editor.commands.command(
-            D(h.posBeforeNode, {
+            O(h.posBeforeNode, {
               type: "checkListItem",
               props: {
                 checked: i.checked
@@ -3315,7 +3315,7 @@ const Es = {
             return;
           const s = parseInt(o[1]);
           n().command(
-            D(r.bnBlock.beforePos, {
+            O(r.bnBlock.beforePos, {
               type: "numberedListItem",
               props: s === 1 && {} || {
                 start: s
@@ -3328,11 +3328,11 @@ const Es = {
   },
   addKeyboardShortcuts() {
     return {
-      Enter: () => Ie(this.options.editor),
+      Enter: () => Ze(this.options.editor),
       "Mod-Shift-7": () => {
         const e = C(this.editor.state);
         return !e.isBlockContainer || e.blockContent.node.type.spec.content !== "inline*" ? !0 : this.editor.commands.command(
-          D(e.bnBlock.beforePos, {
+          O(e.bnBlock.beforePos, {
             type: "numberedListItem",
             props: {}
           })
@@ -3405,7 +3405,7 @@ const Es = {
       "Mod-Alt-0": () => {
         const e = C(this.editor.state);
         return !e.isBlockContainer || e.blockContent.node.type.spec.content !== "inline*" ? !0 : this.editor.commands.command(
-          D(e.bnBlock.beforePos, {
+          O(e.bnBlock.beforePos, {
             type: "paragraph",
             props: {}
           })
@@ -3460,7 +3460,7 @@ const Es = {
         handler: ({ state: e, chain: n, range: t }) => {
           const o = C(e);
           !o.isBlockContainer || o.blockContent.node.type.spec.content !== "inline*" || n().command(
-            D(o.bnBlock.beforePos, {
+            O(o.bnBlock.beforePos, {
               type: "quote",
               props: {}
             })
@@ -3474,7 +3474,7 @@ const Es = {
       "Mod-Alt-q": () => {
         const e = C(this.editor.state);
         return !e.isBlockContainer || e.blockContent.node.type.spec.content !== "inline*" ? !0 : this.editor.commands.command(
-          D(e.bnBlock.beforePos, {
+          O(e.bnBlock.beforePos, {
             type: "quote"
           })
         );
@@ -3769,7 +3769,7 @@ const js = J(
   if (e.tagName === "VIDEO")
     return e.closest("figure") ? void 0 : Kt(e);
   if (e.tagName === "FIGURE") {
-    const n = Xe(e, "video");
+    const n = Je(e, "video");
     if (!n)
       return;
     const { targetElement: t, caption: o } = n;
@@ -3786,7 +3786,7 @@ const js = J(
     };
   }
   let n;
-  return e.props.showPreview ? (n = document.createElement("video"), n.src = e.props.url, e.props.previewWidth && (n.width = e.props.previewWidth)) : (n = document.createElement("a"), n.href = e.props.url, n.textContent = e.props.name || e.props.url), e.props.caption ? e.props.showPreview ? Mt(n, e.props.caption) : Ze(n, e.props.caption) : {
+  return e.props.showPreview ? (n = document.createElement("video"), n.src = e.props.url, e.props.previewWidth && (n.width = e.props.previewWidth)) : (n = document.createElement("a"), n.href = e.props.url, n.textContent = e.props.name || e.props.url), e.props.caption ? e.props.showPreview ? Mt(n, e.props.caption) : Xe(n, e.props.caption) : {
     dom: n
   };
 }, Zs = Me(Ks, {
@@ -3864,20 +3864,6 @@ const js = J(
       }
     };
   },
-  addKeyboardShortcuts() {
-    return {
-      Enter: () => Ie(this.options.editor),
-      "Mod-Shift-7": () => {
-        const e = C(this.editor.state);
-        return !e.isBlockContainer || e.blockContent.node.type.spec.content !== "inline*" ? !0 : this.editor.commands.command(
-          D(e.bnBlock.beforePos, {
-            type: "customListItem",
-            props: {}
-          })
-        );
-      }
-    };
-  },
   addProseMirrorPlugins() {
     return [ei()];
   },
@@ -3900,18 +3886,15 @@ const js = J(
     ];
   },
   renderHTML({ node: e, HTMLAttributes: n }) {
-    var s, i;
-    console.log(e.attrs);
-    const { index: t, prefix: o, ...r } = n;
-    return $(
+    var t, o;
+    return console.log(e.attrs), $(
       this.name,
       "p",
       {
-        ...((s = this.options.domAttributes) == null ? void 0 : s.blockContent) || {},
-        ...r,
-        "data-prefix": e.attrs.prefix
+        ...((t = this.options.domAttributes) == null ? void 0 : t.blockContent) || {},
+        ...n
       },
-      ((i = this.options.domAttributes) == null ? void 0 : i.inlineContent) || {}
+      ((o = this.options.domAttributes) == null ? void 0 : o.inlineContent) || {}
     );
   }
 }), ni = J(
@@ -3946,7 +3929,7 @@ const js = J(
 }, ri = yn(
   Wn
 );
-function O(e, n) {
+function D(e, n) {
   return e in n.schema.blockSchema && n.schema.blockSchema[e] === oi[e];
 }
 function Jc(e, n, t) {
@@ -3959,7 +3942,7 @@ function Xc(e, n, t) {
   return e in t.schema.inlineContentSchema && t.schema.inlineContentSchema[e] === n;
 }
 function ii(e, n, t) {
-  return n.type === e && n.type in t.schema.blockSchema && O(n.type, t);
+  return n.type === e && n.type in t.schema.blockSchema && D(n.type, t);
 }
 function Zc(e, n) {
   return e.type in n.schema.blockSchema && n.schema.blockSchema[e.type].isFileBlock || !1;
@@ -4006,7 +3989,7 @@ function P(e, n) {
 }
 function ol(e) {
   const n = [];
-  return O("heading", e) && n.push(
+  return D("heading", e) && n.push(
     {
       onItemClick: () => {
         P(e, {
@@ -4040,7 +4023,7 @@ function ol(e) {
       key: "heading_3",
       ...e.dictionary.slash_menu.heading_3
     }
-  ), O("quote", e) && n.push({
+  ), D("quote", e) && n.push({
     onItemClick: () => {
       P(e, {
         type: "quote"
@@ -4048,7 +4031,7 @@ function ol(e) {
     },
     key: "quote",
     ...e.dictionary.slash_menu.quote
-  }), O("toggleListItem", e) && n.push({
+  }), D("toggleListItem", e) && n.push({
     onItemClick: () => {
       P(e, {
         type: "toggleListItem"
@@ -4057,7 +4040,7 @@ function ol(e) {
     badge: X("Mod-Shift-6"),
     key: "toggle_list",
     ...e.dictionary.slash_menu.toggle_list
-  }), O("numberedListItem", e) && n.push({
+  }), D("numberedListItem", e) && n.push({
     onItemClick: () => {
       P(e, {
         type: "numberedListItem"
@@ -4066,7 +4049,7 @@ function ol(e) {
     badge: X("Mod-Shift-7"),
     key: "numbered_list",
     ...e.dictionary.slash_menu.numbered_list
-  }), O("bulletListItem", e) && n.push({
+  }), D("bulletListItem", e) && n.push({
     onItemClick: () => {
       P(e, {
         type: "bulletListItem"
@@ -4075,7 +4058,7 @@ function ol(e) {
     badge: X("Mod-Shift-8"),
     key: "bullet_list",
     ...e.dictionary.slash_menu.bullet_list
-  }), O("checkListItem", e) && n.push({
+  }), D("checkListItem", e) && n.push({
     onItemClick: () => {
       P(e, {
         type: "checkListItem"
@@ -4084,7 +4067,7 @@ function ol(e) {
     badge: X("Mod-Shift-9"),
     key: "check_list",
     ...e.dictionary.slash_menu.check_list
-  }), O("paragraph", e) && n.push({
+  }), D("paragraph", e) && n.push({
     onItemClick: () => {
       P(e, {
         type: "paragraph"
@@ -4093,7 +4076,7 @@ function ol(e) {
     badge: X("Mod-Alt-0"),
     key: "paragraph",
     ...e.dictionary.slash_menu.paragraph
-  }), O("codeBlock", e) && n.push({
+  }), D("codeBlock", e) && n.push({
     onItemClick: () => {
       P(e, {
         type: "codeBlock"
@@ -4102,7 +4085,7 @@ function ol(e) {
     badge: X("Mod-Alt-c"),
     key: "code_block",
     ...e.dictionary.slash_menu.code_block
-  }), O("table", e) && n.push({
+  }), D("table", e) && n.push({
     onItemClick: () => {
       P(e, {
         type: "table",
@@ -4122,7 +4105,7 @@ function ol(e) {
     badge: void 0,
     key: "table",
     ...e.dictionary.slash_menu.table
-  }), O("image", e) && n.push({
+  }), D("image", e) && n.push({
     onItemClick: () => {
       const t = P(e, {
         type: "image"
@@ -4135,7 +4118,7 @@ function ol(e) {
     },
     key: "image",
     ...e.dictionary.slash_menu.image
-  }), O("video", e) && n.push({
+  }), D("video", e) && n.push({
     onItemClick: () => {
       const t = P(e, {
         type: "video"
@@ -4148,7 +4131,7 @@ function ol(e) {
     },
     key: "video",
     ...e.dictionary.slash_menu.video
-  }), O("audio", e) && n.push({
+  }), D("audio", e) && n.push({
     onItemClick: () => {
       const t = P(e, {
         type: "audio"
@@ -4161,7 +4144,7 @@ function ol(e) {
     },
     key: "audio",
     ...e.dictionary.slash_menu.audio
-  }), O("file", e) && n.push({
+  }), D("file", e) && n.push({
     onItemClick: () => {
       const t = P(e, {
         type: "file"
@@ -4174,7 +4157,7 @@ function ol(e) {
     },
     key: "file",
     ...e.dictionary.slash_menu.file
-  }), O("heading", e) && (n.push(
+  }), D("heading", e) && (n.push(
     {
       onItemClick: () => {
         P(e, {
@@ -4239,7 +4222,7 @@ function nt(e) {
     Object.entries(e).filter(([, n]) => n !== void 0)
   );
 }
-class Le {
+class Ie {
   constructor(n) {
     p(this, "blockSpecs");
     p(this, "inlineContentSpecs");
@@ -4256,7 +4239,7 @@ class Le {
     ), this.styleSchema = vn(this.styleSpecs);
   }
   static create(n) {
-    return new Le(n);
+    return new Ie(n);
   }
 }
 const li = {
@@ -4284,11 +4267,11 @@ const li = {
   render: di,
   parse: ui,
   toExternalHTML: pi
-}), jn = Le.create({
+}), jn = Ie.create({
   blockSpecs: {
     pageBreak: hi
   }
-}), sl = (e) => Le.create({
+}), sl = (e) => Ie.create({
   blockSpecs: {
     ...e.blockSpecs,
     ...jn.blockSpecs
@@ -4482,13 +4465,13 @@ function yi(e) {
 }
 function Ci(e) {
   return e.transact((n) => {
-    const { bnBlock: t } = qe(n);
+    const { bnBlock: t } = Ge(n);
     return n.doc.resolve(t.beforePos).nodeBefore !== null;
   });
 }
 function vi(e) {
   return e.transact((n) => {
-    const { bnBlock: t } = qe(n);
+    const { bnBlock: t } = Ge(n);
     return n.doc.resolve(t.beforePos).depth > 1;
   });
 }
@@ -4631,7 +4614,7 @@ function Ii(e) {
   };
 }
 function Li(e) {
-  const { bnBlock: n } = qe(e), t = A(e.doc), o = e.doc.resolve(n.beforePos), r = o.nodeBefore, s = e.doc.resolve(n.afterPos).nodeAfter;
+  const { bnBlock: n } = Ge(e), t = A(e.doc), o = e.doc.resolve(n.beforePos), r = o.nodeBefore, s = e.doc.resolve(n.afterPos).nodeAfter;
   let i;
   return o.depth > 1 && (i = o.node(), i.type.isInGroup("bnBlock") || (i = o.node(o.depth - 1))), {
     block: E(n.node, t),
@@ -4749,7 +4732,7 @@ function Pt(e) {
 }
 async function Hi(e, n, t, o) {
   await Tt();
-  const s = Je(n, t).exportBlocks(e, o);
+  const s = Ye(n, t).exportBlocks(e, o);
   return Pt(s);
 }
 function Di(e) {
@@ -5077,7 +5060,7 @@ function ca(e, n, t) {
     ) === void 0, o && (n = c);
   }
   let s;
-  const i = Je(
+  const i = Ye(
     e.state.schema,
     t
   );
@@ -5093,7 +5076,7 @@ function ca(e, n, t) {
       {}
     )}</table>`;
   } else if (o) {
-    const c = Ke(
+    const c = qe(
       n,
       t.schema.inlineContentSchema,
       t.schema.styleSchema
@@ -5340,7 +5323,7 @@ p(me, "defaultCursorRender", (t) => {
     `background-color: ${t.color}; color: ${me.isDarkColor(t.color) ? "white" : "black"}`
   ), s.insertBefore(document.createTextNode(t.name), null), r.insertBefore(s, null), o.insertBefore(document.createTextNode("⁠"), null), o.insertBefore(r, null), o.insertBefore(document.createTextNode("⁠"), null), o;
 });
-let ze = me;
+let Fe = me;
 class ft extends L {
   static key() {
     return "ySyncPlugin";
@@ -5454,7 +5437,7 @@ class pa extends Lt {
     return this.on("update", t);
   }
 }
-const De = new V("blocknote-comments"), ha = "SET_SELECTED_THREAD_ID";
+const He = new V("blocknote-comments"), ha = "SET_SELECTED_THREAD_ID";
 function fa(e, n) {
   const t = /* @__PURE__ */ new Map();
   return e.descendants((o, r) => {
@@ -5531,7 +5514,7 @@ class ma extends L {
     const s = this;
     this.addProsemirrorPlugin(
       new I({
-        key: De,
+        key: He,
         state: {
           init() {
             return {
@@ -5539,7 +5522,7 @@ class ma extends L {
             };
           },
           apply(i, a) {
-            const c = i.getMeta(De);
+            const c = i.getMeta(He);
             if (!i.docChanged && !c)
               return a;
             const l = i.docChanged ? fa(i.doc, s.markType) : s.threadPositions;
@@ -5567,7 +5550,7 @@ class ma extends L {
         props: {
           decorations(i) {
             var a;
-            return ((a = De.getState(i)) == null ? void 0 : a.decorations) ?? q.empty;
+            return ((a = He.getState(i)) == null ? void 0 : a.decorations) ?? q.empty;
           },
           /**
            * Handle click on a thread mark and mark it as selected
@@ -5611,7 +5594,7 @@ class ma extends L {
   selectThread(t, o = !0) {
     var r, s;
     if (this.selectedThreadId !== t && (this.selectedThreadId = t, this.emitStateUpdate(), this.editor.transact(
-      (i) => i.setMeta(De, {
+      (i) => i.setMeta(He, {
         name: ha
       })
     ), t && o)) {
@@ -5889,7 +5872,7 @@ class ka {
       if (i)
         return i.getBoundingClientRect();
     }
-    return $e(this.pmView, r, s);
+    return Ue(this.pmView, r, s);
   }
 }
 const wa = new V(
@@ -5951,7 +5934,7 @@ const Ca = oe.create({
   return Te(
     e.resolve(o)
   );
-}, Ue = (e, n) => {
+}, _e = (e, n) => {
   const t = e.resolve(n), o = t.index();
   if (o === 0)
     return;
@@ -5998,7 +5981,7 @@ const Ca = oe.create({
   state: n,
   dispatch: t
 }) => {
-  const o = n.doc.resolve(e), r = Te(o), s = Ue(
+  const o = n.doc.resolve(e), r = Te(o), s = _e(
     n.doc,
     r.bnBlock.beforePos
   );
@@ -6026,7 +6009,7 @@ const Ca = oe.create({
           return !1;
         const a = s.selection.from === i.blockContent.beforePos + 1, c = i.blockContent.node.type.name === "paragraph";
         return a && !c ? r.command(
-          D(i.bnBlock.beforePos, {
+          O(i.bnBlock.beforePos, {
             type: "paragraph",
             props: {}
           })
@@ -6051,7 +6034,7 @@ const Ca = oe.create({
       }),
       () => r.command(({ state: s, dispatch: i }) => {
         const a = C(s);
-        if (!a.isBlockContainer || !(s.selection.from === a.blockContent.beforePos + 1) || Ue(
+        if (!a.isBlockContainer || !(s.selection.from === a.blockContent.beforePos + 1) || _e(
           s.doc,
           a.bnBlock.beforePos
         ))
@@ -6155,7 +6138,7 @@ const Ca = oe.create({
         if (!i.isBlockContainer)
           return !1;
         if (i.blockContent.node.childCount === 0 && i.blockContent.node.type.spec.content === "inline*") {
-          const c = Ue(
+          const c = _e(
             s.doc,
             i.bnBlock.beforePos
           );
@@ -6190,7 +6173,7 @@ const Ca = oe.create({
         const i = C(s);
         if (!i.isBlockContainer)
           throw new Error("todo");
-        const a = s.selection.from === i.blockContent.beforePos + 1, c = s.selection.empty, l = Ue(
+        const a = s.selection.from === i.blockContent.beforePos + 1, c = s.selection.empty, l = _e(
           s.doc,
           i.bnBlock.beforePos
         );
@@ -6364,7 +6347,7 @@ class Ba {
     });
     p(this, "scrollHandler", () => {
       var n;
-      this.linkMark !== void 0 && (n = this.state) != null && n.show && (this.state.referencePos = $e(
+      this.linkMark !== void 0 && (n = this.state) != null && n.show && (this.state.referencePos = Ue(
         this.pmView,
         this.linkMarkRange.from,
         this.linkMarkRange.to
@@ -6430,7 +6413,7 @@ class Ba {
     if (this.mouseHoveredLinkMark && o && (this.linkMark = this.mouseHoveredLinkMark, this.linkMarkRange = this.mouseHoveredLinkMarkRange), this.keyboardHoveredLinkMark && (this.linkMark = this.keyboardHoveredLinkMark, this.linkMarkRange = this.keyboardHoveredLinkMarkRange), this.linkMark && this.editor.isEditable) {
       this.state = {
         show: !0,
-        referencePos: $e(
+        referencePos: Ue(
           this.pmView,
           this.linkMarkRange.from,
           this.linkMarkRange.to
@@ -6786,7 +6769,7 @@ function io(e, n) {
   if (((o = e.getAttribute) == null ? void 0 : o.call(e, "data-node-type")) === "blockContainer")
     return { node: e, id: e.getAttribute("data-id") };
 }
-class ce extends _e {
+class ce extends Ve {
   constructor(t, o) {
     super(t, o);
     p(this, "nodes");
@@ -6812,7 +6795,7 @@ class ce extends _e {
   }
   map(t, o) {
     const r = o.mapResult(this.from), s = o.mapResult(this.to);
-    return s.deleted ? _e.near(t.resolve(r.pos)) : r.deleted ? _e.near(t.resolve(s.pos)) : new ce(
+    return s.deleted ? Ve.near(t.resolve(r.pos)) : r.deleted ? Ve.near(t.resolve(s.pos)) : new ce(
       t.resolve(r.pos),
       t.resolve(s.pos)
     );
@@ -6821,7 +6804,7 @@ class ce extends _e {
     return { type: "multiple-node", anchor: this.anchor, head: this.head };
   }
 }
-_e.jsonID("multiple-node", ce);
+Ve.jsonID("multiple-node", ce);
 let G;
 function Ra(e, n) {
   let t, o;
@@ -6877,7 +6860,7 @@ function Va(e, n, t) {
     ), rn(o, c, l)) : (o.dispatch(
       o.state.tr.setSelection(be.create(o.state.doc, s))
     ), rn(o, s));
-    const h = o.state.selection.content(), f = t.pmSchema, m = o.serializeForClipboard(h).dom.innerHTML, g = Je(f, t), b = no(h.content), k = g.exportBlocks(b, {}), w = Pt(k);
+    const h = o.state.selection.content(), f = t.pmSchema, m = o.serializeForClipboard(h).dom.innerHTML, g = Ye(f, t), b = no(h.content), k = g.exportBlocks(b, {}), w = Pt(k);
     e.dataTransfer.clearData(), e.dataTransfer.setData("blocknote/html", m), e.dataTransfer.setData("text/html", k), e.dataTransfer.setData("text/plain", w), e.dataTransfer.effectAllowed = "move", e.dataTransfer.setDragImage(G, 0, 0);
   }
 }
@@ -7267,16 +7250,16 @@ class Fa extends L {
     return this.on("update", t);
   }
 }
-const Oe = /* @__PURE__ */ new Map();
+const De = /* @__PURE__ */ new Map();
 function za(e) {
-  if (Oe.has(e))
-    return Oe.get(e);
+  if (De.has(e))
+    return De.get(e);
   const n = new ho();
   return e._tiptapEditor.on("transaction", ({ transaction: t }) => {
     n.appendMapping(t.mapping);
   }), e._tiptapEditor.on("destroy", () => {
-    Oe.delete(e);
-  }), Oe.set(e, n), n;
+    De.delete(e);
+  }), De.set(e, n), n;
 }
 function Wa(e, n, t = "left") {
   const o = de.getState(
@@ -7659,7 +7642,7 @@ function an(e) {
 function Xa(e) {
   _ && (e instanceof Document ? e.body.removeChild(_) : e.removeChild(_), _ = void 0);
 }
-function Re(e) {
+function Oe(e) {
   return Array.prototype.indexOf.call(e.parentElement.childNodes, e);
 }
 function Za(e) {
@@ -7755,7 +7738,7 @@ class ec {
           referencePosCell: w || (g = this.state) == null ? void 0 : g.referencePosCell
         };
       } else {
-        const b = Re(t.domNode), k = Re(t.domNode.parentElement), w = t.domNode.getBoundingClientRect();
+        const b = Oe(t.domNode), k = Oe(t.domNode.parentElement), w = t.domNode.getBoundingClientRect();
         if (this.state !== void 0 && this.state.show && this.tableId === r.id && this.state.rowIndex === k && this.state.colIndex === b)
           return;
         this.state = {
@@ -7797,7 +7780,7 @@ class ec {
         return;
       const r = o[0];
       let s = !1;
-      const i = Re(r.parentElement), a = Re(r), c = this.state.draggingState.draggedCellOrientation === "row" ? this.state.rowIndex : this.state.colIndex, d = (this.state.draggingState.draggedCellOrientation === "row" ? i : a) !== c;
+      const i = Oe(r.parentElement), a = Oe(r), c = this.state.draggingState.draggedCellOrientation === "row" ? this.state.rowIndex : this.state.colIndex, d = (this.state.draggingState.draggedCellOrientation === "row" ? i : a) !== c;
       (this.state.rowIndex !== i || this.state.colIndex !== a) && (this.state.rowIndex = i, this.state.colIndex = a, this.state.referencePosCell = r.getBoundingClientRect(), s = !0);
       const u = this.state.draggingState.draggedCellOrientation === "row" ? t.top : t.left;
       this.state.draggingState.mousePos !== u && (this.state.draggingState.mousePos = u, s = !0), s && this.emitUpdate(), d && this.editor.transact((f) => f.setMeta(Ce, !0));
@@ -8401,12 +8384,12 @@ class lc extends L {
     ie.applyUpdate(o, ie.encodeStateAsUpdate(t.doc));
     const r = this.findTypeInOtherYdoc(t, o);
     this.forkedState = {
-      undoStack: Ne.getState(this.editor.prosemirrorState).undoManager.undoStack,
+      undoStack: Ae.getState(this.editor.prosemirrorState).undoManager.undoStack,
       originalFragment: t,
       forkedFragment: r
     }, this.editor._tiptapEditor.unregisterPlugin([
       tr,
-      Ne,
+      Ae,
       de
     ]), this.editor._tiptapEditor.registerPlugin(
       new ft(r).plugins[0]
@@ -8422,9 +8405,9 @@ class lc extends L {
   merge({ keepChanges: t }) {
     if (!this.forkedState)
       return;
-    this.editor._tiptapEditor.unregisterPlugin(de), this.editor._tiptapEditor.unregisterPlugin(Ne);
+    this.editor._tiptapEditor.unregisterPlugin(de), this.editor._tiptapEditor.unregisterPlugin(Ae);
     const { originalFragment: o, forkedFragment: r, undoStack: s } = this.forkedState;
-    if (this.editor.extensions.ySyncPlugin = new ft(o), this.editor.extensions.yCursorPlugin = new ze(
+    if (this.editor.extensions.ySyncPlugin = new ft(o), this.editor.extensions.yCursorPlugin = new Fe(
       this.collaboration
     ), this.editor.extensions.yUndoPlugin = new mt({
       editor: this.editor
@@ -8434,7 +8417,7 @@ class lc extends L {
       this.editor.extensions.yCursorPlugin.plugins[0]
     ), this.editor._tiptapEditor.registerPlugin(
       this.editor.extensions.yUndoPlugin.plugins[0]
-    ), Ne.getState(
+    ), Ae.getState(
       this.editor.prosemirrorState
     ).undoManager.undoStack = s, t) {
       const i = ie.encodeStateAsUpdate(
@@ -8451,7 +8434,7 @@ const dc = (e) => {
   const n = {}, t = uc(e);
   for (const s of t)
     n[s.name] = s;
-  e.collaboration && (n.ySyncPlugin = new ft(e.collaboration.fragment), n.yUndoPlugin = new mt({ editor: e.editor }), (r = e.collaboration.provider) != null && r.awareness && (n.yCursorPlugin = new ze(e.collaboration)), n.forkYDocPlugin = new lc({
+  e.collaboration && (n.ySyncPlugin = new ft(e.collaboration.fragment), n.yUndoPlugin = new mt({ editor: e.editor }), (r = e.collaboration.provider) != null && r.awareness && (n.yCursorPlugin = new Fe(e.collaboration)), n.forkYDocPlugin = new lc({
     editor: e.editor,
     collaboration: e.collaboration
   })), n.formattingToolbar = new ya(
@@ -8487,7 +8470,7 @@ const uc = (e) => {
         })
       ]
     }),
-    Ge.configure({
+    je.configure({
       // everything from bnBlock group (nodes that represent a BlockNote block should have an id)
       types: ["blockContainer", "columnList", "column"],
       setIdAttribute: e.setIdAttribute
@@ -8622,7 +8605,7 @@ function mc(e, n) {
   }
   return !0;
 }
-const je = class je extends yo {
+const We = class We extends yo {
   constructor(t, o) {
     super({ ...t, content: void 0 });
     p(this, "_state");
@@ -8762,18 +8745,18 @@ const je = class je extends yo {
     ), this.emit("create", { editor: this }), this.isInitialized = !0;
   }
 };
-p(je, "create", (t, o) => {
+p(We, "create", (t, o) => {
   var s, i;
   const r = (s = globalThis == null ? void 0 : globalThis.window) == null ? void 0 : s.setTimeout;
   typeof ((i = globalThis == null ? void 0 : globalThis.window) == null ? void 0 : i.setTimeout) < "u" && (globalThis.window.setTimeout = () => 0);
   try {
-    return new je(t, o);
+    return new We(t, o);
   } finally {
     r && (globalThis.window.setTimeout = r);
   }
 });
-let We = je;
-We.prototype.createView = function() {
+let ze = We;
+ze.prototype.createView = function() {
   this.options.onPaste = this.options.onDrop = void 0;
 };
 const gc = {
@@ -8904,7 +8887,7 @@ class co extends Lt {
     };
     const r = {
       defaultStyles: !0,
-      schema: t.schema || Le.create(),
+      schema: t.schema || Ie.create(),
       _headless: !1,
       ...t,
       placeholders: {
@@ -8925,7 +8908,7 @@ class co extends Lt {
       disableExtensions: r.disableExtensions,
       setIdAttribute: r.setIdAttribute,
       animations: r.animations ?? !0,
-      tableHandles: O("table", this),
+      tableHandles: D("table", this),
       dropCursor: this.options.dropCursor ?? ar,
       placeholders: r.placeholders,
       tabBehavior: r.tabBehavior,
@@ -8966,15 +8949,15 @@ class co extends Lt {
       }();
     }), this.formattingToolbar = this.extensions.formattingToolbar, this.linkToolbar = this.extensions.linkToolbar, this.sideMenu = this.extensions.sideMenu, this.suggestionMenus = this.extensions.suggestionMenus, this.filePanel = this.extensions.filePanel, this.tableHandles = this.extensions.tableHandles, this.comments = this.extensions.comments, this.showSelectionPlugin = this.extensions.showSelection, this.forkYDocPlugin = this.extensions.forkYDocPlugin, r.uploadFile) {
       const T = r.uploadFile;
-      this.uploadFile = async (x, Ae) => {
+      this.uploadFile = async (x, Le) => {
         this.onUploadStartCallbacks.forEach(
-          (te) => te.apply(this, [Ae])
+          (te) => te.apply(this, [Le])
         );
         try {
-          return await T(x, Ae);
+          return await T(x, Le);
         } finally {
           this.onUploadEndCallbacks.forEach(
-            (te) => te.apply(this, [Ae])
+            (te) => te.apply(this, [Le])
           );
         }
       };
@@ -8992,7 +8975,7 @@ class co extends Lt {
     ] : [
       {
         type: "paragraph",
-        id: Ge.options.generateID()
+        id: je.options.generateID()
       }
     ]);
     if (!Array.isArray(i) || i.length === 0)
@@ -9033,7 +9016,7 @@ class co extends Lt {
         transformPasted: fc
       }
     };
-    this.headless ? this.pmSchema = vo(c.extensions) : (this._tiptapEditor = We.create(
+    this.headless ? this.pmSchema = vo(c.extensions) : (this._tiptapEditor = ze.create(
       c,
       this.schema.styleSchema
     ), this.pmSchema = this._tiptapEditor.schema), this.pmSchema.cached.blockNoteEditor = this, this.emit("create");
@@ -9549,7 +9532,7 @@ class co extends Lt {
    * @returns The blocks, serialized as an HTML string.
    */
   async blocksToHTMLLossy(t = this.document) {
-    return Je(this.pmSchema, this).exportBlocks(t, {});
+    return Ye(this.pmSchema, this).exportBlocks(t, {});
   }
   /**
    * Serializes blocks into an HTML string in the format that would normally be rendered by the editor.
@@ -9667,7 +9650,7 @@ class co extends Lt {
       if (i)
         return i.getBoundingClientRect();
     }
-    return $e(this.prosemirrorView, r, s);
+    return Ue(this.prosemirrorView, r, s);
   }
   get isEmpty() {
     const t = this.document;
@@ -9840,9 +9823,9 @@ function ul(e) {
     createStyleMapping: (n) => n
   };
 }
-let Ve;
+let Re;
 async function bc() {
-  return Ve || (Ve = (async () => {
+  return Re || (Re = (async () => {
     const [e, n] = await Promise.all([
       import("emoji-mart"),
       // use a dynamic import to encourage bundle-splitting
@@ -9850,7 +9833,7 @@ async function bc() {
       import("@emoji-mart/data")
     ]), t = "default" in e ? e.default : e, o = "default" in n ? n.default : n;
     return await t.init({ data: o }), { emojiMart: t, emojiData: o };
-  })(), Ve);
+  })(), Re);
 }
 async function pl(e, n) {
   if (!si("text", e))
@@ -9876,7 +9859,7 @@ export {
   Jr as AudioBlock,
   co as BlockNoteEditor,
   L as BlockNoteExtension,
-  Le as BlockNoteSchema,
+  Ie as BlockNoteSchema,
   ll as COLORS_DARK_MODE_DEFAULT,
   cl as COLORS_DEFAULT,
   Qr as CodeBlock,
@@ -9903,7 +9886,7 @@ export {
   qa as SuggestionMenuProseMirrorPlugin,
   tc as TableHandlesProsemirrorPlugin,
   ec as TableHandlesView,
-  Ge as UniqueID,
+  je as UniqueID,
   K as UnreachableCaseError,
   Ta as VALID_LINK_PROTOCOLS,
   Zs as VideoBlock,
@@ -9919,7 +9902,7 @@ export {
   Yr as audioToExternalHTML,
   he as blockToNode,
   Hi as blocksToMarkdown,
-  Fe as camelToDataKebab,
+  $e as camelToDataKebab,
   tl as checkBlockHasDefaultProp,
   ii as checkBlockIsDefaultType,
   Zc as checkBlockIsFileBlock,
@@ -9927,19 +9910,19 @@ export {
   Qc as checkBlockIsFileBlockWithPreview,
   ai as checkBlockTypeHasDefaultProp,
   Jc as checkBlockTypeInSchema,
-  O as checkDefaultBlockTypeInSchema,
+  D as checkDefaultBlockTypeInSchema,
   si as checkDefaultInlineContentTypeInSchema,
   Xc as checkInlineContentTypeInSchema,
   fi as checkPageBreakBlocksInSchema,
   Pt as cleanHTMLToMarkdown,
   hl as combineByGroup,
-  Ke as contentNodeToInlineContent,
+  qe as contentNodeToInlineContent,
   wn as contentNodeToTableContent,
   $r as createAddFileButton,
   Me as createBlockSpec,
   J as createBlockSpecFromStronglyTypedTiptapNode,
   $ as createDefaultBlockDOMOutputSpec,
-  Je as createExternalHTMLExporter,
+  Ye as createExternalHTMLExporter,
   Mt as createFigureWithCaption,
   xt as createFileBlockWrapper,
   zr as createFileNameWithIcon,
@@ -9949,7 +9932,7 @@ export {
   Ur as createInternalHTMLSerializer,
   kr as createInternalInlineContentSpec,
   Cn as createInternalStyleSpec,
-  Ze as createLinkWithCaption,
+  Xe as createLinkWithCaption,
   On as createResizableFileBlockWrapper,
   j as createStronglyTypedTiptapNode,
   qc as createStyleSpec,
@@ -9983,7 +9966,7 @@ export {
   Y as getBlockInfo,
   Te as getBlockInfoFromResolvedPos,
   C as getBlockInfoFromSelection,
-  qe as getBlockInfoFromTransaction,
+  Ge as getBlockInfoFromTransaction,
   yt as getBlockInfoWithManualOffset,
   dc as getBlockNoteExtensions,
   Pe as getBlockNoteSchema,
@@ -10042,7 +10025,7 @@ export {
   jn as pageBreakSchema,
   pi as pageBreakToExternalHTML,
   jt as parseEmbedElement,
-  Xe as parseFigureElement,
+  Je as parseFigureElement,
   ke as propsToAttributes,
   gr as prosemirrorSliceToSlicedBlocks,
   $t as removeAndInsertBlocks,
@@ -10051,11 +10034,11 @@ export {
   Wt as shikiParserSymbol,
   $a as sideMenuPluginKey,
   Cr as stylePropsToAttributes,
-  Ye as tableContentToNodes,
+  Ke as tableContentToNodes,
   Ce as tableHandlesPluginKey,
   Wa as trackPosition,
   Dr as updateBlock,
-  D as updateBlockCommand,
+  O as updateBlockCommand,
   Tn as updateBlockTr,
   nl as uploadToTmpFilesDotOrg_DEV_ONLY,
   Ks as videoBlockConfig,
@@ -10064,6 +10047,6 @@ export {
   Ys as videoRender,
   Xs as videoToExternalHTML,
   sl as withPageBreak,
-  He as wrapInBlockStructure
+  Ne as wrapInBlockStructure
 };
 //# sourceMappingURL=blocknote.js.map
