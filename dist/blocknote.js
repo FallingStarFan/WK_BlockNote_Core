@@ -3894,18 +3894,18 @@ const js = J(
       }
     ];
   },
-  renderHTML({ HTMLAttributes: e }) {
-    var r, s;
-    const { index: n, prefix: t, ...o } = e;
+  renderHTML({ node: e, HTMLAttributes: n }) {
+    var s, i;
+    const { index: t, prefix: o, ...r } = n;
     return $(
       this.name,
       "p",
       {
-        ...((r = this.options.domAttributes) == null ? void 0 : r.blockContent) || {},
-        ...o,
-        "data-prefix": t
+        ...((s = this.options.domAttributes) == null ? void 0 : s.blockContent) || {},
+        ...r,
+        "data-prefix": e.attrs.prefix
       },
-      ((s = this.options.domAttributes) == null ? void 0 : s.inlineContent) || {}
+      ((i = this.options.domAttributes) == null ? void 0 : i.inlineContent) || {}
     );
   }
 }), ni = J(
