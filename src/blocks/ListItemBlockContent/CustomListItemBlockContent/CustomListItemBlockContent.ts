@@ -34,11 +34,6 @@ const CustomListItemBlockContent = createStronglyTypedTiptapNode({
         parseHTML: (el) => el.getAttribute("data-index"),
         renderHTML: (attrs) => ({ "data-index": attrs.index }),
       },
-      prefix: {
-        default: 0,
-        parseHTML: (el) => el.getAttribute("data-prefix"),
-        renderHTML: (attrs) => ({ "data-prefix": attrs.prefix }),
-      },
     };
   },
 
@@ -96,7 +91,6 @@ const CustomListItemBlockContent = createStronglyTypedTiptapNode({
       {
         ...(this.options.domAttributes?.blockContent || {}),
         ...rest,
-        "data-index": index,
         "data-prefix": prefix,
       },
       this.options.domAttributes?.inlineContent || {}
