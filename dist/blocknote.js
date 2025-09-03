@@ -3856,6 +3856,11 @@ const js = J(
         default: 1,
         parseHTML: (e) => e.getAttribute("data-index"),
         renderHTML: (e) => ({ "data-index": e.index })
+      },
+      prefix: {
+        default: 0,
+        parseHTML: (e) => Number(e.getAttribute("data-prefix")) || 0,
+        renderHTML: (e) => ({ "data-prefix": e.prefix ?? 0 })
       }
     };
   },
@@ -3896,6 +3901,7 @@ const js = J(
   },
   renderHTML({ node: e, HTMLAttributes: n }) {
     var s, i;
+    console.log(e.attrs);
     const { index: t, prefix: o, ...r } = n;
     return $(
       this.name,
