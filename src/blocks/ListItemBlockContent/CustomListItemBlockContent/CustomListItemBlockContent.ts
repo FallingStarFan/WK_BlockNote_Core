@@ -42,26 +42,7 @@ const CustomListItemBlockContent = createStronglyTypedTiptapNode({
     };
   },
 
-  addKeyboardShortcuts() {
-    return {
-      Enter: () => handleEnter(this.options.editor),
-      "Mod-Shift-7": () => {
-        const blockInfo = getBlockInfoFromSelection(this.editor.state);
-        if (
-          !blockInfo.isBlockContainer ||
-          blockInfo.blockContent.node.type.spec.content !== "inline*"
-        ) {
-          return true;
-        }
-        return this.editor.commands.command(
-          updateBlockCommand(blockInfo.bnBlock.beforePos, {
-            type: "customListItem",
-            props: {},
-          })
-        );
-      },
-    };
-  },
+
 
   addProseMirrorPlugins() {
     return [CustomListIndexingPlugin()];
@@ -89,15 +70,13 @@ const CustomListItemBlockContent = createStronglyTypedTiptapNode({
 
   renderHTML({node, HTMLAttributes }) {
     console.log(node.attrs);
-    const { index, prefix, ...rest } = HTMLAttributes;
 
     return createDefaultBlockDOMOutputSpec(
       this.name,
       "p",
       {
         ...(this.options.domAttributes?.blockContent || {}),
-        ...rest,
-        "data-prefix": node.attrs.prefix,
+        ...HTMLAttributes,
       },
       this.options.domAttributes?.inlineContent || {}
     );
